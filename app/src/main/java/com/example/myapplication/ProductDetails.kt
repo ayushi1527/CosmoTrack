@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.R
 
@@ -25,17 +27,12 @@ val LightMaroon = Color(0xFFD8B4B4)
 val MaroonCard = Color(0xFFB85C5C)
 val SoftWhite = Color(0xFFFFF8F7)
 
-data class ProductDetails(
-    val name: String,
-    val expiryDays: Int,
-    val ingredients: String,
-    val barcode: String
-)
+
 
 @Composable
-fun ProductDetailsScreen(product: ProductDetails, modifier: Modifier = Modifier) {
+fun ProductDetailsScreen(navController: NavController) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
     ) {
         Image(
@@ -48,7 +45,7 @@ fun ProductDetailsScreen(product: ProductDetails, modifier: Modifier = Modifier)
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -65,17 +62,17 @@ fun ProductDetailsScreen(product: ProductDetails, modifier: Modifier = Modifier)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text(product.name, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Maroon)
-            Text("Expires in ${product.expiryDays} days", color = Color(0xFFB65D00))
+            Text("Coronation Shampoo", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Maroon)
+            Text("Expires in 7 days", color = Color(0xFFB65D00))
 
             Spacer(modifier = Modifier.height(16.dp))
             ExpiryStatusRow()
 
             Spacer(modifier = Modifier.height(16.dp))
-            IngredientsCard(product.ingredients)
+            IngredientsCard()
 
             Spacer(modifier = Modifier.height(16.dp))
-            BarcodeCard(product.barcode)
+            BarcodeCard()
 
             Spacer(modifier = Modifier.height(16.dp))
             ActionButtons()
@@ -120,7 +117,7 @@ fun StatusButton(text: String, selected: Boolean) {
 }
 
 @Composable
-fun IngredientsCard(ingredients: String) {
+fun IngredientsCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -129,13 +126,13 @@ fun IngredientsCard(ingredients: String) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("📋 Ingredients information", fontWeight = FontWeight.Bold, color = Color.White)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(ingredients, color = Color.White, fontSize = 14.sp)
+            Text("Aqua, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Glycerin, etc.", color = Color.White, fontSize = 14.sp)
         }
     }
 }
 
 @Composable
-fun BarcodeCard(barcode: String) {
+fun BarcodeCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -144,7 +141,7 @@ fun BarcodeCard(barcode: String) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("📦 Barcode Number", fontWeight = FontWeight.Bold, color = Color.White)
             Spacer(modifier = Modifier.height(4.dp))
-            Text(barcode, fontSize = 16.sp, color = Color.White)
+            Text("123456789012", fontSize = 16.sp, color = Color.White)
         }
     }
 }
@@ -177,15 +174,7 @@ fun ActionButtons() {
 
 @Preview(showBackground = true)
 @Composable
-fun ProductDetailsPreview() {
-    val previewProduct = ProductDetails(
-        name = "Coronation",
-        expiryDays = 64,
-        ingredients = "Aqua, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Glycerin, etc.",
-        barcode = "123456789012"
-    )
-
-    MyApplicationTheme {
-        ProductDetailsScreen(product = previewProduct)
-    }
+fun ProductDetailsScreenPreview() {
+    val navController = rememberNavController()
+    ProductDetailsScreen(navController = navController)
 }
